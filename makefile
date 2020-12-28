@@ -1,6 +1,6 @@
 all: prompt.c process.c
-	gcc -o prompt prompt.c
-	gcc -o process process.c
+	gcc -o client client.c
+	gcc -o server server.c
 run:
-	./process &
-	./prompt
+	./server &
+	./client
