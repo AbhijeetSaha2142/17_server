@@ -21,8 +21,6 @@ static void sighandler(int signo)
 
 int main(){
     signal(SIGINT, sighandler);
-    mkfifo("mario", 0666);
-    mkfifo("luigi", 0666);
     int inpipe = open("mario", O_WRONLY);
     if (inpipe == -1) {
         printf("errno: %d\terror: %s\n", errno, strerror(errno));
