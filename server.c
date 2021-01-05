@@ -39,7 +39,7 @@ static void sighandler(int signo)
 {
     if (signo == SIGPIPE)
     {
-        printf("------------------------------------------------------------\n")
+        printf("------------------------------------------------------------\n");
         printf("Client disconnected. Restarting Handshake Protocol...\n\n");
         handshake();
     }
