@@ -27,6 +27,14 @@ static void sighandler(int signo)
     }
 }
 
+void catch(int status)
+{
+    if (status == -1)
+    {
+        printf("Error (%d): %s\n", errno, strerror(errno));
+    }
+}
+
 void handshake(){
     printf("Waiting for a Client Connection...\n");
     mkfifo("WKP", 0666); // make Well Known Pipe
@@ -34,7 +42,7 @@ void handshake(){
     char private_name[256];
     int status;
     status = read(fd, private_name, 256); // read in the name of the FIFO that the Client made
-    check_error(status);
+    catch(status);
     int private_pipe = open(private_name, O_WRONLY);
     remove("WKP");
     
@@ -44,12 +52,12 @@ void handshake(){
     
     char ACK[] = "Acknowledgement of Private Pipe being received";
     status = write(private_pipe, ACK, sizeof(ACK));
-    check_error(status);
+    catch(status);
 
     char CONF[256];
 
     status = read(fd, CONF, 256); // confirmation of acknowledgement reception
-    check_error(status);
+    catch(status);
     printf("Handshake established! Confirmation message: %s\n\n", CONF);
     close(fd);
 }

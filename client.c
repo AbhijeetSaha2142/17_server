@@ -17,6 +17,15 @@ static void sighandler(int signo)
     }
 }
 
+void catch(int status)
+{
+    if (status == -1)
+    {
+        printf("Error (%d): %s\n", errno, strerror(errno));
+    }
+}
+
+
 void handshake()
 {
     char private_name[256];
@@ -25,15 +34,15 @@ void handshake()
     int status;
     int wkp = open("WKP", O_WRONLY); 
     status = write(wkp, private_name, strlen(private_name)); // connection request
-    check_error(status);
+    catch(status);
     int private_pipe = open(private_name, O_RDONLY);
     char ACK[256];
     status = read(private_pipe, ACK, 256); // recieve acknowledgement
-    check_error(status);
+    catch(status);
     remove(private_name);
     char CONF[] = "Acknowledgement Received\n";
     status = write(wkp, CONF, sizeof(CONF));
-    check_error(status);
+    catch(status);
     close(wkp);
     close(private_pipe);
 }   
