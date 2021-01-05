@@ -48,7 +48,7 @@ static void sighandler(int signo)
     {
         remove("mario");
         remove("luigi");
-        remove("wkp");
+        remove("WKP");
         exit(0);
     }
 }
