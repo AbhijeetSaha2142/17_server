@@ -10,22 +10,6 @@
 #include <errno.h>
 #include <signal.h>
 
-static void sighandler(int signo)
-{
-    if (signo == SIGPIPE)
-    {
-        printf("Client disconnected. Setting up new handshake for next client...\n");
-        handshake();
-    }
-
-    if (signo == SIGINT)
-    {
-        remove("mario");
-        remove("luigi");
-        remove("wkp");
-        exit(0);
-    }
-}
 
 void catch(int status)
 {
@@ -61,6 +45,24 @@ void handshake(){
     printf("Handshake established! Confirmation message: %s\n\n", CONF);
     close(fd);
 }
+
+static void sighandler(int signo)
+{
+    if (signo == SIGPIPE)
+    {
+        printf("Client disconnected. Setting up new handshake for next client...\n");
+        handshake();
+    }
+
+    if (signo == SIGINT)
+    {
+        remove("mario");
+        remove("luigi");
+        remove("wkp");
+        exit(0);
+    }
+}
+
 int phi(int n){ 
     int ans = n; 
     for (int p = 2; p * p <= n; ++p) { 

@@ -9,13 +9,6 @@
 #include <signal.h>
 #include <stdlib.h>
 
-static void sighandler(int signo)
-{
-    if (signo == SIGINT)
-    {
-        exit(0);
-    }
-}
 
 void catch(int status)
 {
@@ -46,6 +39,14 @@ void handshake()
     close(wkp);
     close(private_pipe);
 }   
+
+static void sighandler(int signo)
+{
+    if (signo == SIGINT)
+    {
+        exit(0);
+    }
+}
 
 int main(){
     signal(SIGINT, sighandler);
