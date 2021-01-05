@@ -5,19 +5,8 @@
 #include <sys/types.h>
 #include <ctype.h>
 #include <sys/stat.h>
-#include <sys/errno.h>
 #include <string.h>
-#include <errno.h>
 #include <signal.h>
-
-
-void catch(int status, int n)
-{
-    if (status == -1)
-    {
-        //printf("%d Error (%d): %s\n", n, errno, strerror(errno));
-    }
-}
 
 void handshake(){
     printf("Waiting for a Client Connection...\n");
@@ -26,7 +15,6 @@ void handshake(){
     char private_name[258];
     int status;
     status = read(fd, private_name, 258); // read in the name of the FIFO that the Client made
-    catch(status, 29);
     int private_pipe = open(private_name, O_WRONLY);
 
     remove("WKP");
@@ -37,12 +25,11 @@ void handshake(){
     
     char ACK[] = "Acknowledgement of Private Pipe being received";
     status = write(private_pipe, ACK, sizeof(ACK));
-    catch(status, 39);
 
     char CONF[256];
 
     status = read(fd, CONF, 256); // confirmation of acknowledgement reception
-    catch(status, 44);
+
     printf("Handshake completed. Confirmation message: %s\n\n", CONF);
     close(fd);
 }
@@ -85,22 +72,18 @@ int main(){
     signal(SIGPIPE, sighandler);
     handshake();
     int inpipe = open("mario", O_RDONLY);
-    catch(inpipe, 87);
 
     int outpipe = open("luigi", O_WRONLY);
-    catch(outpipe, 90);
     char input [256] = "";
     char output [256] = "";
     while(1){
         // read input from mario
         int r = read(inpipe, &input, sizeof(input));
-        catch(r, 96);
         int ans = phi(atoi(input));
         sprintf(output, "%d", ans);
 
         // write processed input to luigi
         int w = write(outpipe, &output, sizeof(output));
-        catch(w, 102);
     }
 
     close(inpipe);
