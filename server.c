@@ -116,5 +116,7 @@ int main(){
 
     close(inpipe);
     close(outpipe);
+    remove("mario");
+    remove("luigi");
     return 0;
 }
