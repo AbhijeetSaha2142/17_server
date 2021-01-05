@@ -14,7 +14,7 @@ void catch(int status, int n)
 {
     if (status == -1)
     {
-        printf("%d Error (%d): %s\n", n, errno, strerror(errno));
+        //printf("%d Error (%d): %s\n", n, errno, strerror(errno));
     }
 }
 
