@@ -1,35 +1,13 @@
-/*
-Server Design
-Handshake
-A procedure to ensure that a connection has been established between 2 programs.
-Both ends of the connection must verify that they can send and receive data to and from each other.
-3 way handshake
-Client sends a message to the server. (server knows it can receive)
-    Server sends a response to the client. (client knows it can recieve and send)
-    Client sends a response back to the server. (server knows it can receive and send)
-    Setup
-    Server creates a FIFO (Well Known Pipe) and waits for a connection.
-    Client creates a “private” FIFO.
-    sprintf(buffer, "%d", getpid() );
-    Handshake
-    Client connects to server and sends the private FIFO name. Client waits for a response from the server.
-    Server receives client’s message and removes the WKP.
-    Server connects to client FIFO, sending an initial acknowledgement message.
-    Client receives server’s message, removes its private FIFO.
-    Client sends response to server.
-    Operation
-    Server and client send information back and forth.
-    Reset
-    Client exits, server closes any connections to the client.
-    Server recreates the WKP waits for another client.
-*/
 #include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
 #include <unistd.h>
-#include <errno.h>
-#include <string.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <ctype.h>
 #include <sys/stat.h>
+#include <sys/errno.h>
+#include <string.h>
+#include <errno.h>
 #include <signal.h>
 
 static void sighandler(int signo)
