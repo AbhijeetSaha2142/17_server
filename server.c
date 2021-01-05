@@ -28,7 +28,7 @@ void handshake(){
     status = read(fd, private_name, 258); // read in the name of the FIFO that the Client made
     catch(status, 29);
     int private_pipe = open(private_name, O_WRONLY);
-    
+
     remove("WKP");
     
     printf("Received Connection Request\n\n");
@@ -79,11 +79,11 @@ int phi(int n){
 } 
 
 int main(){
+    mkfifo("mario", 0666);
+    mkfifo("luigi", 0666);
     signal(SIGINT, sighandler);
     signal(SIGPIPE, sighandler);
     handshake();
-    mkfifo("mario", 0666);
-    mkfifo("luigi", 0666);
     int inpipe = open("mario", O_RDONLY);
     catch(inpipe, 87);
 
