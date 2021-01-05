@@ -42,7 +42,7 @@ void handshake(){
 
     status = read(fd, CONF, 256); // confirmation of acknowledgement reception
     catch(status);
-    printf("Handshake established! Confirmation message: %s\n\n", CONF);
+    printf("Handshake completed. Confirmation message: %s\n\n", CONF);
     close(fd);
 }
 
@@ -50,7 +50,7 @@ static void sighandler(int signo)
 {
     if (signo == SIGPIPE)
     {
-        printf("Client disconnected. Setting up new handshake for next client...\n");
+        printf("Client disconnected. Restarting Handshake Protocol...\n");
         handshake();
     }
 
