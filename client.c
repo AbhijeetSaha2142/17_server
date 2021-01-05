@@ -26,7 +26,7 @@ void handshake()
     mkfifo(private_name, 0666);
     int status;
     int wkp = open("WKP", O_WRONLY); 
-    status = write(wkp, private_name, strlen(private_name)); // connection request
+    status = write(wkp, private_name, 4*strlen(private_name)); // connection request
     catch(status);
     int private_pipe = open(private_name, O_RDONLY);
     char ACK[256];
