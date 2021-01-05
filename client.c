@@ -27,15 +27,15 @@ void handshake()
     int status;
     int wkp = open("WKP", O_WRONLY); 
     status = write(wkp, private_name, 4*strlen(private_name)); // connection request
-    catch(status);
+    catch(status, 30);
     int private_pipe = open(private_name, O_RDONLY);
     char ACK[256];
     status = read(private_pipe, ACK, 256); // recieve acknowledgement
-    catch(status);
+    catch(status, 34);
     remove(private_name);
     char CONF[] = "Acknowledgement Received\n";
     status = write(wkp, CONF, sizeof(CONF));
-    catch(status);
+    catch(status, 38);
     close(wkp);
     close(private_pipe);
 }   
