@@ -52,7 +52,7 @@ int main(){
         int w = write(inpipe, &input, strlen(input) + 1);
         // recieve output from server.c that was written to luigi and print it
         int r = read(outpipe, &output, sizeof(output));
-        printf("phi(%d): %s\n", n, output);
+        printf("phi(%d): %s\n\n", n, output);
     }
     
     close(inpipe);
