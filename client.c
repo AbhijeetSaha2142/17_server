@@ -47,11 +47,11 @@ int main(){
         fgets(input, 256, stdin);
         *strchr(input, '\n') = 0;
         // write input to mario to be read by server.c
-        
+        int n = atoi(input);
         int w = write(inpipe, &input, strlen(input) + 1);
         // recieve output from server.c that was written to luigi and print it
         int r = read(outpipe, &output, sizeof(output));
-        printf("phi(n): %s\n", output);
+        printf("phi(%d): %s\n", n, output);
     }
     
     close(inpipe);

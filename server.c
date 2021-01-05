@@ -81,7 +81,7 @@ int main(){
     while(1){
         // read input from mario
         int r = read(inpipe, &input, sizeof(input));
-        printf("Finding phi(%d)...\n\n", atoi(input));
+        printf("Computing phi(%d)...\n\n", atoi(input));
         int ans = phi(atoi(input));
         sprintf(output, "%d", ans);
 
