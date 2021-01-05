@@ -9,7 +9,7 @@
 #include <signal.h>
 
 void handshake(){
-    printf("Waiting for a Client Connection...\n");
+    printf("Waiting for a Client Connection...\n\n");
     mkfifo("WKP", 0666); // make Well Known Pipe
     int fd = open("WKP", O_RDONLY); 
     char private_name[258];
@@ -31,6 +31,7 @@ void handshake(){
     status = read(fd, CONF, 256); // confirmation of acknowledgement reception
 
     printf("Handshake completed. Confirmation message: %s\n\n", CONF);
+    printf("Processing inputs...\n\n");
     close(fd);
 }
 
@@ -38,7 +39,8 @@ static void sighandler(int signo)
 {
     if (signo == SIGPIPE)
     {
-        printf("Client disconnected. Restarting Handshake Protocol...\n");
+        printf("------------------------------------------------------------\n")
+        printf("Client disconnected. Restarting Handshake Protocol...\n\n");
         handshake();
     }
 
@@ -79,7 +81,7 @@ int main(){
     while(1){
         // read input from mario
         int r = read(inpipe, &input, sizeof(input));
-        printf("\nFinding phi(%d)...\n", r);
+        printf("Finding phi(%d)...\n\n", atoi(input));
         int ans = phi(atoi(input));
         sprintf(output, "%d", ans);
 
