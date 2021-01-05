@@ -29,6 +29,7 @@ static void sighandler(int signo)
 {
     if (signo == SIGINT)
     {
+        printf("\n");
         exit(0);
     }
 }
