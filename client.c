@@ -12,15 +12,34 @@ static void sighandler(int signo)
 {
     if (signo == SIGINT)
     {
-        remove("mario");
-        remove("luigi");
-        printf("\n");
-        exit(0);   
+        exit(0);
     }
 }
 
+void handshake()
+{
+    char private_name[256];
+    sprintf(private_name, "%d", getpid());
+    mkfifo(private_name, 0666);
+    int status;
+    int wkp = open("WKP", O_WRONLY); 
+    status = write(wkp, private_name, strlen(private_name)); // connection request
+    check_error(status);
+    int private_pipe = open(private_name, O_RDONLY);
+    char ACK[256];
+    status = read(private_pipe, ACK, 256); // recieve acknowledgement
+    check_error(status);
+    remove(private_name);
+    char CONF[] = "Acknowledgement Received\n";
+    status = write(wkp, CONF, sizeof(CONF));
+    check_error(status);
+    close(wkp);
+    close(private_pipe);
+}   
+
 int main(){
     signal(SIGINT, sighandler);
+    handshake();
     int inpipe = open("mario", O_WRONLY);
     if (inpipe == -1) {
         printf("errno: %d\terror: %s\n", errno, strerror(errno));
