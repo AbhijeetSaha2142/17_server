@@ -79,6 +79,7 @@ int phi(int n){
 
 int main(){
     signal(SIGINT, sighandler);
+    signal(SIGPIPE, sighandler);
     handshake();
     mkfifo("mario", 0666);
     mkfifo("luigi", 0666);
