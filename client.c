@@ -19,7 +19,7 @@ void handshake()
     char ACK[256];
     status = read(private_pipe, ACK, 256); // recieve acknowledgement
     remove(private_name);
-    char CONF[] = "Acknowledgement Received\n";
+    char CONF[] = "Acknowledgement Received.";
     status = write(wkp, CONF, sizeof(CONF));
     close(wkp);
     close(private_pipe);

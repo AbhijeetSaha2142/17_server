@@ -31,7 +31,7 @@ void handshake(){
     status = read(fd, CONF, 256); // confirmation of acknowledgement reception
 
     printf("Handshake completed. Confirmation message: %s\n\n", CONF);
-    printf("Processing inputs...\n\n");
+    printf("Ready to process inputs...\n\n");
     close(fd);
 }
 
