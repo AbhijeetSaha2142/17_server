@@ -28,6 +28,7 @@ void handshake(){
     status = read(fd, private_name, 258); // read in the name of the FIFO that the Client made
     catch(status, 29);
     int private_pipe = open(private_name, O_WRONLY);
+    
     remove("WKP");
     
     printf("Received Connection Request\n\n");
