@@ -23,9 +23,9 @@ void handshake(){
     printf("Waiting for a Client Connection...\n");
     mkfifo("WKP", 0666); // make Well Known Pipe
     int fd = open("WKP", O_RDONLY); 
-    char private_name[256];
+    char private_name[258];
     int status;
-    status = read(fd, private_name, 256); // read in the name of the FIFO that the Client made
+    status = read(fd, private_name, 258); // read in the name of the FIFO that the Client made
     catch(status);
     int private_pipe = open(private_name, O_WRONLY);
     remove("WKP");
