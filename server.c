@@ -15,7 +15,7 @@ static void sighandler(int signo)
     if (signo == SIGPIPE)
     {
         printf("Client disconnected. Setting up new handshake for next client...\n");
-        setup_new_handshake();
+        handshake();
     }
 
     if (signo == SIGINT)
