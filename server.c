@@ -11,11 +11,11 @@
 #include <signal.h>
 
 
-void catch(int status)
+void catch(int status, int n)
 {
     if (status == -1)
     {
-        printf("Error (%d): %s\n", errno, strerror(errno));
+        printf("%d Error (%d): %s\n", n, errno, strerror(errno));
     }
 }
 
@@ -26,7 +26,7 @@ void handshake(){
     char private_name[258];
     int status;
     status = read(fd, private_name, 258); // read in the name of the FIFO that the Client made
-    catch(status);
+    catch(status, 29);
     int private_pipe = open(private_name, O_WRONLY);
     remove("WKP");
     
@@ -36,12 +36,12 @@ void handshake(){
     
     char ACK[] = "Acknowledgement of Private Pipe being received";
     status = write(private_pipe, ACK, sizeof(ACK));
-    catch(status);
+    catch(status, 39);
 
     char CONF[256];
 
     status = read(fd, CONF, 256); // confirmation of acknowledgement reception
-    catch(status);
+    catch(status, 44);
     printf("Handshake completed. Confirmation message: %s\n\n", CONF);
     close(fd);
 }
@@ -84,34 +84,22 @@ int main(){
     mkfifo("mario", 0666);
     mkfifo("luigi", 0666);
     int inpipe = open("mario", O_RDONLY);
-    if (inpipe == -1) {
-        printf("errno: %d\terror: %s\n", errno, strerror(errno));
-        return -1;
-    }
+    catch(inpipe, 87);
 
     int outpipe = open("luigi", O_WRONLY);
-    if (outpipe == -1) {
-        printf("errno: %d\terror: %s\n", errno, strerror(errno));
-        return -1;
-    } 
+    catch(outpipe, 90);
     char input [256] = "";
     char output [256] = "";
     while(1){
         // read input from mario
         int r = read(inpipe, &input, sizeof(input));
-        if (r == -1) {
-            printf("errno: %d\terror: %s\n", errno, strerror(errno));
-            break;
-        }
+        catch(r, 96);
         int ans = phi(atoi(input));
         sprintf(output, "%d", ans);
 
         // write processed input to luigi
         int w = write(outpipe, &output, sizeof(output));
-        if (w == -1) {
-            printf("errno: %d\terror: %s\n", errno, strerror(errno));
-            break;
-        }
+        catch(w, 102);
     }
 
     close(inpipe);

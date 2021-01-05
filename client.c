@@ -10,11 +10,11 @@
 #include <stdlib.h>
 
 
-void catch(int status)
+void catch(int status, int n)
 {
     if (status == -1)
     {
-        printf("Error (%d): %s\n", errno, strerror(errno));
+        printf("%d Error (%d): %s\n", n, errno, strerror(errno));
     }
 }
 
@@ -51,19 +51,10 @@ static void sighandler(int signo)
 int main(){
     signal(SIGINT, sighandler);
     handshake();
-    mkfifo("mario", 0666);
-    mkfifo("luigi", 0666);
     int inpipe = open("mario", O_WRONLY);
-    if (inpipe == -1) {
-        printf("errno: %d\terror: %s\n", errno, strerror(errno));
-        return -1;
-    }
-
+    catch(inpipe, 55);
     int outpipe = open("luigi", O_RDONLY);
-    if (outpipe == -1) {
-        printf("errno: %d\terror: %s\n", errno, strerror(errno));
-        return -1;
-    } 
+    catch(outpipe, 57);
     char input [256] = "";
     char output [256] = "";
 
@@ -72,19 +63,13 @@ int main(){
         printf("Please enter a positive integer: ");
         fgets(input, 256, stdin);
         *strchr(input, '\n') = 0;
-        // write input to mario to be read by process.c
+        // write input to mario to be read by server.c
         
         int w = write(inpipe, &input, strlen(input) + 1);
-        if (w == -1) {
-            printf("errno: %d\terror: %s\n", errno, strerror(errno));
-            break;
-        }
-        // recieve output from process.c that was written to luigi and print it
+        catch(w, 69);
+        // recieve output from server.c that was written to luigi and print it
         int r = read(outpipe, &output, sizeof(output));
-        if (r == -1) {
-            printf("errno: %d\terror: %s\n", errno, strerror(errno));
-            break;
-        } 
+        catch(r, 72);
         printf("phi(n): %s\n", output);
     }
     
